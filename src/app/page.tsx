@@ -8,7 +8,7 @@ async function getData() {
   const res= await fetch(
     `${process.env.VERCEL_URL}/api/getMessages`
   ).then((res) => res.json());
-  return res;
+  return res||{messages:[]};
 }
 export default async function Home() {
   const data = await getData();
