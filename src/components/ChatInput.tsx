@@ -3,10 +3,15 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
 import { Message } from "../../typing";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetchMessages";
 
 const ChatInput = () => {
   const [message, setMessage] = React.useState("");
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
+  console.log("🚀 ~ file: ChatInput.tsx:12 ~ ChatInput ~ data", messages);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message) return;
     const sentMessage = message;
@@ -34,14 +39,18 @@ const ChatInput = () => {
         "🚀 ~ file: ChatInput.tsx:33 ~ uploadMessagetoUpstah ~ data:",
         data
       );
+      return [data.message, ...messages!];
     };
-    uploadMessagetoUpstash();
+    await mutate(uploadMessagetoUpstash, {
+      optimisticData: [messageObj, ...messages!],
+      rollbackOnError: true,
+    });
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100"
+      className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t bg-white border-gray-100"
     >
       <input
         type="text"
