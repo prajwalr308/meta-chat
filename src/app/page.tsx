@@ -9,9 +9,9 @@ import { fetcher } from "@/utils/fetchMessages";
 // import Loading from "@/components/loading";
 
 export default async function Home() {
-  const data = await getData();
+  const { data, error } = useSWR("/api/getMessages", fetcher);
   console.log(data);
-  const messages: Message[] = data.messages;
+  const messages: Message[] = data || [];
 
   // if (!messages) return <Loading />;
   return (
