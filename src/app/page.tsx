@@ -7,7 +7,7 @@ import useSWR from "swr";
 
 async function getData() {
 
-  const response = await fetch(new Request(`/api/getMessages`));
+  const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getMessages`);
   return await response.json();
 }
 
