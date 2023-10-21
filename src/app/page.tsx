@@ -6,7 +6,7 @@ import { Message } from "../../typing";
 
 export default async function Home() {
   const data = await fetch(
-    "/api/getMessages"
+    `${process.env.VERCEL_URL}/api/getMessages`
   ).then((res) => res.json());
   const messages: Message[] = data.messages;
   // if (!messages) return <Loading />;
