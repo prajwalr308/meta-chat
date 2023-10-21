@@ -27,7 +27,7 @@ const MessageList = ({initialMessages}:Props) => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [mutate, messages, clientPusher]);
+  }, [mutate, messages]);
   return (
     <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl">
       {(messages||initialMessages).map((message) => (
