@@ -1,8 +1,6 @@
 export const getData = async(): Promise<any | null> => {
   const response = await fetch(
-    `${
-      process.env.VERCEL_URL as string || "http://localhost:3000"
-    }/api/getMessages`
+   "/api/getMessages"
   );
   if (!response.ok) throw new Error("Error fetching data");
   const data = await response.json();
