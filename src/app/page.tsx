@@ -5,19 +5,19 @@ import { Message } from "../../typing";
 import useSWR from "swr";
 // import Loading from "@/components/loading";
 
-async function getMessages() {
-  const response = await fetch(`${process.env.VERCEL_URL}/api/getMessages`);
+async function getData() {
+  const origin = new URL(process.env.VERCEL_URL as string).origin;
+
+  const response = await fetch(new Request(`${origin}/api/getMessages`));
   return await response.json();
 }
 
 export default async function Home() {
-  const { data, error } = useSWR("messages", getMessages);
+  const data = await getData();
+  const messages: Message[] = data.messages;
 
-  if (error) {
-    return <div>Error loading messages</div>;
-  }
 
-  const messages: Message[] = data || [];
+  
   // if (!messages) return <Loading />;
   return (
     <main>
