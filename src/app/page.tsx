@@ -1,3 +1,4 @@
+'use client'
 import ChatInput from "@/components/ChatInput";
 import MessageList from "@/components/MessageList";
 import Image from "next/image";
@@ -8,10 +9,9 @@ import { fetcher } from "@/utils/fetchMessages";
 // import Loading from "@/components/loading";
 
 export default async function Home() {
-  
-  const { data, error } = useSWR('/api/getMessages', fetcher);
+  const data = await getData();
   console.log(data);
-  const messages: Message[] = data || [];
+  const messages: Message[] = data.messages;
 
   // if (!messages) return <Loading />;
   return (
