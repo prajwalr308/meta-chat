@@ -5,15 +5,17 @@ import { v4 as uuid } from "uuid";
 import { Message } from "../../typing";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetchMessages";
+import { useSession } from "next-auth/react";
 
 const ChatInput = () => {
+  const {data:session}=useSession()
   const [message, setMessage] = React.useState("");
   const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
   console.log("🚀 ~ file: ChatInput.tsx:12 ~ ChatInput ~ data", messages);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!message) return;
+    if (!message || !session) return;
     const sentMessage = message;
     setMessage("");
     const id = uuid();
@@ -21,9 +23,9 @@ const ChatInput = () => {
       id,
       message: sentMessage,
       createdAt: Date.now(),
-      userName: "John Doe",
-      profilePic: "https://i.pravatar.cc/300",
-      email: "prajwalr.thedeveloper@gmail.com",
+      userName: session?.user?.name!,
+      profilePic: session?.user?.image!,
+      email: session?.user?.email || "",
     };
 
     const uploadMessagetoUpstash = async () => {

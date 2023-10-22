@@ -5,8 +5,8 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     FacebookProvider({
-        clientId: process.env.FACEBOOK_CLIENT_ID as string,
-        clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string
+        clientId: process.env.FACEBOOK_CLIENT_ID! as string,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET! as string
       })
     // ...add more providers here
   ],
@@ -17,4 +17,5 @@ export const authOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+const handler= NextAuth(authOptions);
+export { handler as GET, handler as POST }
