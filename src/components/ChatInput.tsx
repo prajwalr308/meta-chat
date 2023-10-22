@@ -8,7 +8,7 @@ import { fetcher } from "@/utils/fetchMessages";
 import { useSession } from "next-auth/react";
 
 const ChatInput = () => {
-  const {data:session}=useSession()
+  const { data: session } = useSession();
   const [message, setMessage] = React.useState("");
   const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
   console.log("🚀 ~ file: ChatInput.tsx:12 ~ ChatInput ~ data", messages);
@@ -41,10 +41,10 @@ const ChatInput = () => {
         "🚀 ~ file: ChatInput.tsx:33 ~ uploadMessagetoUpstah ~ data:",
         data
       );
-      return [data.message, ...messages!];
+      return [...messages!, data.message];
     };
     await mutate(uploadMessagetoUpstash, {
-      optimisticData: [messageObj, ...messages!],
+      optimisticData: [...messages!, messageObj],
       rollbackOnError: true,
     });
   };

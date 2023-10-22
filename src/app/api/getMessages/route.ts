@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const messageResponse = await redis.hvals("messages");
   const messages: Message[] = messageResponse
     .map((message) => JSON.parse(message))
-    .sort((a: Message, b: Message) => b.createdAt - a.createdAt);
+    .sort((a: Message, b: Message) => a.createdAt - b.createdAt);
 
   return new NextResponse(JSON.stringify({ messages }), {
     status: 200,

@@ -8,7 +8,7 @@ import { Message } from "../../typing";
 type Props = {
   initialMessages: Message[];
 };
-const MessageList = ({initialMessages}:Props) => {
+const MessageList = ({ initialMessages }: Props) => {
   const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
   useEffect(() => {
     const channel = clientPusher.subscribe("messages");
@@ -18,7 +18,7 @@ const MessageList = ({initialMessages}:Props) => {
         mutate(fetcher);
       } else {
         mutate(fetcher, {
-          optimisticData: [message, ...messages!],
+          optimisticData: [...messages!, message],
           rollbackOnError: true,
         });
       }
@@ -29,8 +29,8 @@ const MessageList = ({initialMessages}:Props) => {
     };
   }, [mutate, messages]);
   return (
-    <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl">
-      {(messages||initialMessages).map((message) => (
+    <div className="space-y-5 px-5 pt-8 pb-32 ">
+      {(messages || initialMessages).map((message) => (
         <MessageComponent key={message.id} message={message} />
       ))}
     </div>
